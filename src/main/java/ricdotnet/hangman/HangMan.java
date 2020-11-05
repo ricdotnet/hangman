@@ -21,8 +21,9 @@ public class HangMan {
     static boolean finished = false;
     static String word;
     static String character;
-    static int wrongGuesses = 1;
-    static int correctGuesses = 1;
+    static int wrongGuesses = 0;
+    static int correctGuesses = 0;
+    static int selwordchar = 0;
     
     static int line;
     static int column;
@@ -47,11 +48,39 @@ public class HangMan {
         }
     }
     
+    public static void repeatingChars(int x){
+        for(int i = 0; i < word.length(); i++){
+            
+        }
+    }
+    
     public static void main(String[] args){
         //hangMan();
         
         getWord();
         System.out.println(word);
+        
+        /*for(int i = 0; i < word.length(); i++){
+            for(int j = 0; j < word.length(); j++){
+                if(word[i] == word[j]){
+                    
+                }
+            }
+        }*/
+        
+        String selword[] = new String[word.length()]; //create an array with the length of the word
+        Arrays.fill(selword, "*");
+        
+        for(int i = 0; i < word.length(); i++){
+            System.out.print(selword[i]);
+        }
+        System.out.println("\n"); //print next line
+        
+        //show the user underscore for each character
+        //for(int i = 0; i < word.length(); i++){
+        //    System.out.print(selword[i]);
+        //}
+        //System.out.println("\n"); //print next line
         
         System.out.println("The word contains " + word.length() + " characters. \n"
                 + "You have 7 tries to guess the word.\n");
@@ -61,7 +90,8 @@ public class HangMan {
         
         //start the game
         while(finished == false){
-            System.out.println(wrongGuesses);
+            
+            //System.out.println(wrongGuesses);
             if(!word.contains(character)){
                 System.out.println("The word does not contain the character '" + character + "'.\n"
                         + "Please enter a new character: ");
@@ -74,15 +104,39 @@ public class HangMan {
                     finished = true;
                 }
             }else{
-                System.out.println("Nice, there is a " + character + " in the word.\n"
-                        + "Enter a new character: ");
-                character = input.next();
-                correctGuesses += 1;
+                if(Arrays.asList(selword).contains(character)){
+                    System.out.println("You already entered this. \n"
+                            + "Enter a new character: ");
+                    character = input.next();
+                }else{
+                    selword[selwordchar] = character; //add valid character to the list
                 
-                if(correctGuesses == word.length()){
-                    System.out.println("Game finished. You guessed the word. :)\n"
-                            + "It was " + word + ".");
-                    finished = true;
+                    for(int i = 0; i < word.length(); i++){
+                        System.out.print(selword[i]);
+                    }
+                    System.out.println("");
+                
+                    System.out.println("Nice, there is a " + character + " in the word.\n"
+                            + "Enter a new character: ");
+                    character = input.next();
+                    correctGuesses += 1; //add 1 correct guess
+                    selwordchar += 1; //select the next character on the hidden word
+                
+                
+                //replace underscore with the character
+                //if(character.equals(word.charAt(selwordchar))){
+                //    selword[selwordchar] = character;
+                //    for(int i = 0; i < word.length(); i++){
+                //        System.out.print(selword[i]);
+                //    }
+                //    System.out.println();
+                //}
+                
+                    if(correctGuesses == word.length()){
+                        System.out.println("Game finished. You guessed the word. :)\n"
+                                + "It was " + word + ".");
+                        finished = true;
+                    }
                 }
             }
         }//end while loop
